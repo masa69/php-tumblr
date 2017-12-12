@@ -23,16 +23,20 @@ class Tumblr {
 	 *
 	 * @return array
 	 */
-	public function gets($option = []) {
+	public function get($option = []) {
 
-		$tag        = (isset($option['tag']))        ? $option['tag']        : '';
-		$type       = (isset($option['type']))       ? $option['type']       : '';
 		$identifier = (isset($option['identifier'])) ? $option['identifier'] : $this->identifier;
+		$type       = (isset($option['type']))       ? $option['type']       : '';
+		$tag        = (isset($option['tag']))        ? $option['tag']        : '';
+		$id         = (isset($option['id']))         ? (int) $option['id']   : 0;
+
+		$id = (empty($id)) ? null : $id;
 
 		$url = "http://api.tumblr.com/v2/blog/{$identifier}/posts/{$type}";
 
 		$response = $this->client->request('GET', $url, ['query' => [
-			'tag'     => $tag,
+			'tag' => $tag,
+			'id' => $id,
 			'api_key' => $this->tumblr->consumerKey,
 		]]);
 		// $response = $this->client->request('POST', $url, ['form_params' => [
